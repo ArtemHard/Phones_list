@@ -23,10 +23,21 @@ const ModalInner = ({ children, onClose }) => {
       window.document.removeEventListener("keydown", escHandler);
     };
   }, []);
+
+  const closeClickHandler = () => {
+    onClose()
+  }
+
+  const innerClickHandler = (e) => {
+    e.stopPropagation()
+  }
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.inner}>
+    <div onClick={closeClickHandler} className={styles.wrapper}>
+      <div onClick={innerClickHandler} className={styles.inner}>
         <svg
+          onClick={closeClickHandler}        
+          role="button"
           className={`bi bi-x-lg ${styles.icon}` }
           xmlns="http://www.w3.org/2000/svg"
           width="16"
