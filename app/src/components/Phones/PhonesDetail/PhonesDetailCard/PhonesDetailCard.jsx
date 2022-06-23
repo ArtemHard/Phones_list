@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom"
 import { usePhonesDetailContext } from "../PhonesDetail"
 
-const PhonesDetailCard = () => {
+const PhonesDetailCard = ({a}) => {
 
     const navigate = useNavigate({})
 
     const {phone, openModal} = usePhonesDetailContext()
+    
+    
+    console.log({a});
 
 
     return (

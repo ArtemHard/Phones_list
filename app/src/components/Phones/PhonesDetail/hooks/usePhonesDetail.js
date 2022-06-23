@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const usePhonesDetail = (closeModal) => {
   const { phonesId } = useParams();
 
+  const [loading, setLoading] = useState(false);
+
   const [phone, setPhone] = useState({});
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setLoading(true);
+
     fetch(`http://localhost:3000/api/v1/phones/${phonesId}`)
       .then((response) => response.json())
-      .then((dataFromServer) => setPhone(dataFromServer));
+      .then((dataFromServer) => setPhone(dataFromServer))
+      .finally(() => setLoading(false));
   }, [phonesId]);
 
   const submitHandler = async (e) => {
@@ -38,10 +43,10 @@ const usePhonesDetail = (closeModal) => {
     }
   };
 
-  console.log("usePhonesDetail:", { phone });
   return {
     phone,
     submitHandler,
+    loading,
   };
 };
 
