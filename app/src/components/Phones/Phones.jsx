@@ -21,8 +21,20 @@ const addPhone = (newPhone) => {
     setPhones((prev) => [ ...prev, newPhone])
 }
 
+const deletePhone = (id) => {
+    fetch(`http://localhost:3000/api/v1/phones/${id}`, {
+        method: 'DELETE',
+    })
+            .then(response => {
+                if (response.status === 200) {
+                    setPhones(prev => prev.filter((phone) => phone.id !== id))
+                }
+            })
+            
+}
+
     return (
-        <PhonesContext.Provider value={{ phones, addPhone }}>
+        <PhonesContext.Provider value={{ phones, addPhone, deletePhone }}>
             <PhoneForm />
             < hr className='mb-4' />
             <PhonesList/>

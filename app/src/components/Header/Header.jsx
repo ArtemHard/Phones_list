@@ -5,7 +5,7 @@ const Header = () => {
 
 
     return (
- <nav className="navbar navbar-expand-lg bg-light">
+ <nav className="navbar navbar-expand bg-light">
   <div className="container-fluid">
     <Link className="navbar-brand" to="/">Main</Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
