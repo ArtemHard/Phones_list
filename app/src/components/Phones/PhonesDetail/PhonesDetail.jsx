@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { createContext } from "react"
 import { useMemo } from "react"
+import withLoader from "../../hocs/withLoader"
 import usePhonesDetail from "./hooks/usePhonesDetail"
 import usePhonesDetailModal from "./hooks/usePhonesDetailModal"
 import PhonesDetailCard from "./PhonesDetailCard/PhonesDetailCard"
@@ -9,16 +10,18 @@ import PhonesDetailModal from "./PhonesDetailModal/PhonesDetailModal"
 
 const PhonesDetailContext = createContext()
 
+const PhonesDetailCardWithLoader = withLoader(PhonesDetailCard)
+
 const PhonesDetail = () => {
    
 
   const {viewModal, openModal, closeModal} = usePhonesDetailModal()
 
-  const {phone, submitHandler} = usePhonesDetail(closeModal)
+  const {phone, submitHandler, loading} = usePhonesDetail(closeModal)
 
   const sharedValues = useMemo(() => {
     return {
-      viewModal, openModal, closeModal, phone, submitHandler,
+      viewModal, openModal, closeModal, phone, submitHandler
     }
   }, [phone, viewModal])
   
@@ -26,7 +29,7 @@ const PhonesDetail = () => {
     return (
       <PhonesDetailContext.Provider value={sharedValues}>
         <div className="d-flex justify-content-center">
-          <PhonesDetailCard />
+          <PhonesDetailCardWithLoader loading={loading} a={10} />
           <PhonesDetailModal />
         </div>
       </PhonesDetailContext.Provider>
