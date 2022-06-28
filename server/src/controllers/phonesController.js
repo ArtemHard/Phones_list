@@ -2,7 +2,19 @@ const { db } = require("../../db");
 const { v4: uuidv4 } = require("uuid");
 
 const getPhones = (req, res) => {
-  const dataForClient = db.phones.map(({ email, ...rest }) => rest);
+  const filter = req.query.filter && JSON.parse(req.query.filter);
+  console.log(filter);
+  let dataForClient = db.phones.map(({ email, ...rest }) => rest);
+
+  if (filter) {
+    if (filter.search) {
+      const searchRegExp = new RegExp(filter.search, "i");
+      dataForClient = dataForClient.filter((phone) =>
+        searchRegExp.test(phone.name)
+      );
+    }
+  }
+
   res.json(dataForClient);
 };
 

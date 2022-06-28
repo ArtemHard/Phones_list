@@ -1,5 +1,6 @@
 import PhoneForm from './PhoneForm/PhoneForm'
 import PhonesList from './PhonesList/PhonesList'
+import SearchPhoneForm from './Search/SearchPhoneForm'
 
 const {createContext, useState, useEffect, useContext} = require('react')
 
@@ -37,6 +38,7 @@ const deletePhone = (id) => {
         <PhonesContext.Provider value={{ phones, addPhone, deletePhone }}>
             <PhoneForm />
             < hr className='mb-4' />
+            <SearchPhoneForm/>
             <PhonesList/>
         </PhonesContext.Provider>
     )
