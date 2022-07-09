@@ -14,13 +14,15 @@ function Phones() {
     useEffect(() => {
         fetch('http://localhost:3000/api/v1/phones')
             .then(response => response.json())
-            .then(dataFromServer => setPhones(dataFromServer))
+            .then((dataFromServer) => setPhones((prev) => dataFromServer))
     }, [])
 
 
 const addPhone = (newPhone) => {
     setPhones((prev) => [ ...prev, newPhone])
 }
+
+const updatePhones = (newPhonesList) => setPhones(newPhonesList)
 
 const deletePhone = (id) => {
     fetch(`http://localhost:3000/api/v1/phones/${id}`, {
@@ -35,7 +37,7 @@ const deletePhone = (id) => {
 }
 
     return (
-        <PhonesContext.Provider value={{ phones, addPhone, deletePhone }}>
+        <PhonesContext.Provider value={{ phones, addPhone, deletePhone, updatePhones }}>
             <PhoneForm />
             < hr className='mb-4' />
             <SearchPhoneForm/>

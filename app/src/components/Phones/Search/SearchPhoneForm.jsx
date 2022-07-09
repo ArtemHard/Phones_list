@@ -1,40 +1,53 @@
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-
+import { useSearchParams } from "react-router-dom";
+import { usePhonesContext } from "../Phones";
 
 // let isMount = false
 
 const SearchPhoneForm = () => {
   const [searchInput, setSearchInput] = useState("");
 
-  let isMount = useRef(false)
- 
+  let isMount = useRef(false);
 
-  
+  const { updatePhones } = usePhonesContext();
 
-  useEffect(()=> {
-    console.log('useEffect');
-    if(isMount.current) {
-        const filter = {
-            search: searchInput
-        }
+  const [searchParams, setSearchParams] = useSearchParams();
 
-        const prepareFilterForUrl = encodeURIComponent(JSON.stringify(filter))
-        fetch(`http://localhost:3000/api/v1/phones/?filter=${prepareFilterForUrl}`)
-        .then(response => response.json())
-        .then(console.log)
+  useEffect(() => {
+    console.log("useEffect");
+    if (isMount.current) {
+      const filter = {
+        search: searchInput,
+      };
 
+      const prepareFilterForUrl = encodeURIComponent(JSON.stringify(filter));
+
+      const query = `filter=${prepareFilterForUrl}`;
+
+      setSearchParams(query);
+
+      fetch(`http://localhost:3000/api/v1/phones/?${query}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          updatePhones((prev) => data);
+        });
     } else {
-        isMount.current = true
+      const parsedQuery = JSON.parse(searchParams.get("filter"));
+
+      
+      if (parsedQuery && parsedQuery.search) {
+          setSearchInput(parsedQuery.search);
+        }
+        isMount.current = true;
     }
-
-  }, [searchInput])
-
+  }, [searchInput]);
 
   const changeHandler = (e) => {
-    setSearchInput(e.target.value)
-  }
+    setSearchInput(e.target.value);
+  };
 
   return (
     <form className="d-flex flex-column align-items-center">
