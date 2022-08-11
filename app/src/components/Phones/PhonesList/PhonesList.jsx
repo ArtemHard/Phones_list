@@ -1,11 +1,10 @@
-import { useContext } from "react";
-import { PhonesContext } from "../Phones";
 import PhonesItem from "../PhonesItem/PhonesItem";
 import { motion, AnimatePresence } from "framer-motion";
 import { phonesListVariants } from "./animationPhones";
+import { useSelector } from "react-redux";
 
 function PhonesList() {
-  const { phones } = useContext(PhonesContext);
+  const phones = useSelector(store => store.phones);
 
   return (
     <div className="d-flex justify-content-center">

@@ -1,12 +1,12 @@
 const express = require("express");
 
-const cors = require("cors");
 const { phonesRouter } = require("./src/routes/phonesRouter");
 
 const PORT = 3000;
 
 const app = express();
 
+const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 

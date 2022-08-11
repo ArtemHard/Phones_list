@@ -1,10 +1,13 @@
 import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { useDispatch } from 'react-redux'
+import { updatePhoneQuery } from "../../../redux/actionCreators/phonesAC";
 const usePhonesDetail = (closeModal) => {
   const { phonesId } = useParams();
 
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch()
 
   const [phone, setPhone] = useState({});
 
@@ -21,26 +24,8 @@ const usePhonesDetail = (closeModal) => {
     e.preventDefault();
 
     const formData = Object.fromEntries(new FormData(e.target).entries());
-
-    const response = await fetch(
-      `http://localhost:3000/api/v1/phones/${phone.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
-
-    if (response.status === 200) {
-      const updatedPhoneFromServer = await response.json(); // не приходит ответ
-      setPhone(updatedPhoneFromServer);
-      closeModal();
-      e.target.reset();
-    } else {
-      alert("Wrong data");
-    }
+  
+    dispatch(updatePhoneQuery(phonesId, formData, closeModal))
   };
 
   return {

@@ -2,12 +2,12 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { PhonesItemVariants } from "./animationPhonesItem";
 import { useNavigate } from "react-router-dom";
-import { usePhonesContext } from "../Phones";
+import { useDispatch } from "react-redux";
+import { deletePhoneQuery } from "../../redux/actionCreators/phonesAC";
 
 function PhonesItem({ name, phone, id }) {
   let deleteTrashHold = 120;
-  const { deletePhone } = usePhonesContext();
-
+  const dispatch = useDispatch()
   const followX = useMotionValue(0);
   const xInput = [-deleteTrashHold, 0, deleteTrashHold];
   const background = useTransform(followX, xInput, [
@@ -29,7 +29,7 @@ function PhonesItem({ name, phone, id }) {
   const dragEndHandler = () => {
     console.log("dragEndHandler");
     if (Math.abs(followX.get()) > deleteTrashHold) {
-      deletePhone(id);
+      dispatch(deletePhoneQuery(id))
     }
 
     setTimeout(() => {
