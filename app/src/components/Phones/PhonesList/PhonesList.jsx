@@ -11,7 +11,6 @@ function PhonesList() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log({filter});
     dispatch(setPhonesQuery(filter))
   }, [filter])
   return (
