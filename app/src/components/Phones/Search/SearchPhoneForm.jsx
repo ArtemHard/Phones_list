@@ -1,40 +1,48 @@
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { setFilter } from "../../redux/actionCreators/filterAC";
 
 // let isMount = false
 
 const SearchPhoneForm = () => {
   const [searchInput, setSearchInput] = useState("");
+  let isMount = useRef(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  let isMount = useRef(false)
- 
+  const dispatch = useDispatch()
 
-  
+  useEffect(() => {
+    console.log("useEffect");
+    if (isMount.current) {
+      const filter = {
+        search: searchInput,
+      };
 
-  useEffect(()=> {
-    console.log('useEffect');
-    if(isMount.current) {
-        const filter = {
-            search: searchInput
-        }
+      const prepareFilterForUrl = encodeURIComponent(JSON.stringify(filter));
 
-        const prepareFilterForUrl = encodeURIComponent(JSON.stringify(filter))
-        fetch(`http://localhost:3000/api/v1/phones/?filter=${prepareFilterForUrl}`)
-        .then(response => response.json())
-        .then(console.log)
+      const query = `filter=${prepareFilterForUrl}`;
+
+      setSearchParams(query);
+      dispatch(setFilter(query))
 
     } else {
-        isMount.current = true
+      const parsedQuery = JSON.parse(searchParams.get("filter"));
+
+      
+      if (parsedQuery && parsedQuery.search) {
+          setSearchInput(parsedQuery.search)
+          dispatch(setFilter(parsedQuery))
+        }
+        isMount.current = true;
     }
-
-  }, [searchInput])
-
+  }, [searchInput]);
 
   const changeHandler = (e) => {
-    setSearchInput(e.target.value)
-  }
+    setSearchInput(e.target.value);
+  };
 
   return (
     <form className="d-flex flex-column align-items-center">

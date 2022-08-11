@@ -1,46 +1,28 @@
 import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { useDispatch, useSelector } from 'react-redux'
+import { getPhoneQuery, updatePhoneQuery } from "../../../redux/actionCreators/phonesAC";
 const usePhonesDetail = (closeModal) => {
   const { phonesId } = useParams();
 
   const [loading, setLoading] = useState(false);
 
-  const [phone, setPhone] = useState({});
+  const dispatch = useDispatch()
+
+  const phone = useSelector(store => store.phones.find((el) => el.id === phonesId)) || {}
 
   useLayoutEffect(() => {
-    setLoading(true);
-
-    fetch(`http://localhost:3000/api/v1/phones/${phonesId}`)
-      .then((response) => response.json())
-      .then((dataFromServer) => setPhone(dataFromServer))
-      .finally(() => setLoading(false));
-  }, [phonesId]);
+    console.log('useLayoutEffect');
+    setLoading(true)
+    dispatch(getPhoneQuery(phonesId, setLoading))
+  }, []);
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
     const formData = Object.fromEntries(new FormData(e.target).entries());
-
-    const response = await fetch(
-      `http://localhost:3000/api/v1/phones/${phone.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
-
-    if (response.status === 200) {
-      const updatedPhoneFromServer = await response.json(); // не приходит ответ
-      setPhone(updatedPhoneFromServer);
-      closeModal();
-      e.target.reset();
-    } else {
-      alert("Wrong data");
-    }
+  
+    dispatch(updatePhoneQuery(phonesId, formData, closeModal))
   };
 
   return {
