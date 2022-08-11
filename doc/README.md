@@ -9,5 +9,6 @@ For installation the app you have to open directory /server/ and text command 'n
 
 SPA can do:
 - upload phones from server
-- delete phones
+- delete phones with using framer motion
 - open modal window for editing phone
+- filtrate phones in 'input' at real-time
