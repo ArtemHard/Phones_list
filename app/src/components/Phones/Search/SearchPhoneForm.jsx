@@ -1,19 +1,18 @@
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { usePhonesContext } from "../Phones";
+import { setFilter } from "../../redux/actionCreators/filterAC";
 
 // let isMount = false
 
 const SearchPhoneForm = () => {
   const [searchInput, setSearchInput] = useState("");
-
   let isMount = useRef(false);
-
-  const { updatePhones } = usePhonesContext();
-
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     console.log("useEffect");
@@ -27,19 +26,15 @@ const SearchPhoneForm = () => {
       const query = `filter=${prepareFilterForUrl}`;
 
       setSearchParams(query);
+      dispatch(setFilter(query))
 
-      fetch(`http://localhost:3000/api/v1/phones/?${query}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          updatePhones((prev) => data);
-        });
     } else {
       const parsedQuery = JSON.parse(searchParams.get("filter"));
 
       
       if (parsedQuery && parsedQuery.search) {
-          setSearchInput(parsedQuery.search);
+          setSearchInput(parsedQuery.search)
+          dispatch(setFilter(parsedQuery))
         }
         isMount.current = true;
     }

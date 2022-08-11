@@ -24,6 +24,8 @@ const PhonesDetail = () => {
       viewModal, openModal, closeModal, phone, submitHandler
     }
   }, [phone, viewModal])
+
+  console.log(loading, sharedValues);
   
 
     return (

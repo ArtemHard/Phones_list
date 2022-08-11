@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from 'react-redux'
-import { updatePhoneQuery } from "../../../redux/actionCreators/phonesAC";
+import { useDispatch, useSelector } from 'react-redux'
+import { getPhoneQuery, updatePhoneQuery } from "../../../redux/actionCreators/phonesAC";
 const usePhonesDetail = (closeModal) => {
   const { phonesId } = useParams();
 
@@ -9,16 +9,13 @@ const usePhonesDetail = (closeModal) => {
 
   const dispatch = useDispatch()
 
-  const [phone, setPhone] = useState({});
+  const phone = useSelector(store => store.phones.find((el) => el.id === phonesId)) || {}
 
   useLayoutEffect(() => {
-    setLoading(true);
-
-    fetch(`http://localhost:3000/api/v1/phones/${phonesId}`)
-      .then((response) => response.json())
-      .then((dataFromServer) => setPhone(dataFromServer))
-      .finally(() => setLoading(false));
-  }, [phonesId]);
+    console.log('useLayoutEffect');
+    setLoading(true)
+    dispatch(getPhoneQuery(phonesId, setLoading))
+  }, []);
 
   const submitHandler = async (e) => {
     e.preventDefault();

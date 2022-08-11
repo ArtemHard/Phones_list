@@ -7,9 +7,9 @@ const setPhones = (newPhonesArray) => {
     }
 }
 
-export const setPhonesQuery = () => async (dispatch) => {
+export const setPhonesQuery = (filter = '') => async (dispatch) => {
 
-    const response = await fetch(`http://localhost:3000/api/v1/phones`)
+    const response = await fetch(`http://localhost:3000/api/v1/phones/?${filter}`)
     const dataFromServer = await response.json()
     dispatch(setPhones(dataFromServer))
 }
@@ -87,5 +87,11 @@ export const addPhoneQuery = (formData, e) => async (dispatch) => {
       } else {
         alert("Wrong data");
       }
-    
+}
+
+export const getPhoneQuery = (id, setLoading) => async (dispatch) => {
+  const response = await fetch(`http://localhost:3000/api/v1/phones/${id}`)
+  const phoneFromServer = await response.json()
+  dispatch(addPhone(phoneFromServer))
+  setLoading(false)
 }

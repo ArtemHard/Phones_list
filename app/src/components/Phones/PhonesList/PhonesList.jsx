@@ -1,11 +1,19 @@
 import PhonesItem from "../PhonesItem/PhonesItem";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { phonesListVariants } from "./animationPhones";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setPhonesQuery } from "../../redux/actionCreators/phonesAC";
 
 function PhonesList() {
   const phones = useSelector(store => store.phones);
+  const filter = useSelector(store => store.filter)
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    console.log({filter});
+    dispatch(setPhonesQuery(filter))
+  }, [filter])
   return (
     <div className="d-flex justify-content-center">
       {phones.length ? (
@@ -15,11 +23,9 @@ function PhonesList() {
           animate="end"
           className="list-group"
         >
-          <AnimatePresence>
             {phones.map((phone) => (
               <PhonesItem key={phone.id} {...phone} />
             ))}
-            </AnimatePresence>
         </motion.div>
       ) : null}
     </div>

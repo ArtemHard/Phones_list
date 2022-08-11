@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { setPhonesQuery } from '../redux/actionCreators/phonesAC'
 import PhoneForm from './PhoneForm/PhoneForm'
 import PhonesList from './PhonesList/PhonesList'
-// import SearchPhoneForm from './Search/SearchPhoneForm'
+import SearchPhoneForm from './Search/SearchPhoneForm'
 import {createContext, useEffect, useContext} from 'react'
 
 const PhonesContext = createContext()
@@ -19,7 +19,7 @@ function Phones() {
         <>
             <PhoneForm />
             < hr className='mb-4' />
-            {/* <SearchPhoneForm/> */}
+            <SearchPhoneForm/>
             <PhonesList/>
         </>
     )

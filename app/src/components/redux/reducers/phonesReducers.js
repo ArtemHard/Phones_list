@@ -8,13 +8,14 @@ const phonesReducer = (store = [], action) => {
             return store.filter((phone) => phone.id !== action.payload)
         
         case UPDATE_PHONE:
-            return store.map((phone) => {
+            return store.length ?
+            store.map((phone) => {
                 if (phone.id === action.payload.id) {
                     return action.payload
                 }
 
                 return phone
-            })
+            }) : [action.payload]
         case ADD_PHONE:
             return [...store, action.payload]
 
