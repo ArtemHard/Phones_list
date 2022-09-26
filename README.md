@@ -14,6 +14,4 @@ SPA can do:
 - delete phones with using framer motion
 - open modal window for editing phone
 - filtrate phones in 'input' at real-time
-  <<<<<<< HEAD:doc/README.md
-- filtrate phones in 'input' at real-time
   ![](doc/IntroduceAnimation.gif)
